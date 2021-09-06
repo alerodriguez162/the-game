@@ -3,6 +3,33 @@
     src: url(fonts/ccoverbyteoffregular.otf);
 }
 
+@font-face {
+    font-family: pixelar;
+    src: url(/fonts/Blox2.ttf);
+}
+
+.title{
+    text-align: center;
+    font-size: 120px;
+    color: black;
+    font-family: pixelar;
+    width: 100%;
+    text-decoration: underline yellow;  
+    text-decoration-style: wavy;
+    background: -webkit-linear-gradient(black, yellow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+.hocho{
+    height: 90px;
+    width: 130px;
+    transform: translateY(-10px);
+ 
+}
+
+
 .info{
     color: black;
     background-color: white;
@@ -17,7 +44,7 @@
 
 .btn1 {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -30,9 +57,10 @@
 body {
     font-family: Pixel;
     font-size: 16px;
-    background-image: url(/fondo\ 2-1.jpg);
+    background-image: url(/fondo\ 2-2.jpg);
     background-attachment: fixed;
     background-position: center;
+
 }
 
 h2 {
