@@ -1,0 +1,13 @@
+body{
+    background-image: url(/fondo\ 2-1.jpg);
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.btn1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+align-items: center;
+    
+}
