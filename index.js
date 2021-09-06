@@ -82,11 +82,17 @@ class Board {
 
 class Card {
   //TODO Seleccion de cartas
-  constructor(type, width, height) {
+  constructor(type) {
     this.type = type;
-    this.width = width;
-    this.height = height;
+    this.width = 50;
+    this.height = 50;
+
+
   }
+  function fruits() {
+    switch(this.type)
+  }
+
 }
 
 window.onload = () => {
