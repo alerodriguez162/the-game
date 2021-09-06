@@ -88,85 +88,63 @@ class Board {
   checkIfLoose() {}
 }
 
-
 class Card {
   //TODO Seleccion de cartas
-  constructor(type) {
+  constructor(type, x, y) {
     this.type = type;
-    this.width = 50;
-    this.height = 50;
-    this.img = new Image()
+    this.width = 100;
+    this.height = 100;
+    this.img = new Image();
+    this.img.src = this.fruits();
   }
   fruits() {
-    switch(this.type) {
+    switch (this.type) {
       case "apple":
-        this.img.src = '/images/cards/manzana.jpg'
-      break;
+        return "/images/cards/manzana.jpg";
       case "almond":
-        this.img.src = '/images/cards/almendra.jpg'
-      break;
+        return "/images/cards/almendra.jpg";
       case "coffee":
-        this.img.src = '/images/cards/cafe.jpg'
-      break;
+        return "/images/cards/cafe.jpg";
       case "donut":
-        this.img.src = '/images/cards/dona.jpg'
-      break;
+        return "/images/cards/dona.jpg";
       case "cookie":
-        this.img.src = '/images/cards/galletas.jpg'
-      break;
+        return "/images/cards/galletas.jpg";
       case "burger":
-        this.img.src = '/images/cards/hamburguesa.jpg'
-      break;
+        return "/images/cards/hamburguesa.jpg";
       case "ice":
-        this.img.src = '/images/cards/helado.jpg'
-      break;
+        return "/images/cards/helado.jpg";
       case "jocho":
-        this.img.src = '/images/cards/hotdog.jpg'
-      break;
+        return "/images/cards/hotdog.jpg";
       case "muffin":
-        this.img.src = '/images/cards/helado.jpg'
-      break;
+        return "/images/cards/helado.jpg";
       case "ice":
-        this.img.src = '/images/cards/helado.jpg'
-      break;
+        return "/images/cards/helado.jpg";
       case "pizza":
-        this.img.src = '/images/cards/pizza.jpg'
-      break;
+        return "/images/cards/pizza.jpg";
       case "cheese":
-        this.img.src = '/images/cards/ques.jpg'
-      break;
+        return "/images/cards/ques.jpg";
       case "ramen":
-        this.img.src = '/images/cards/ramen.jpg'
-      break;
+        return "/images/cards/ramen.jpg";
       case "taco":
-        this.img.src = '/images/cards/taco.jpg'
-      break;
+        return "/images/cards/taco.jpg";
       case "avocado":
-        this.img.src = '/images/aguacate.png'
-      break;
+        return "/images/aguacate.png";
       case "burrito":
-        this.img.src = '/images/burrito.jfif'
-      break;
+        return "/images/burrito.jfif";
       case "fries":
-        this.img.src = '/images/fries.jfif'
-      break;
+        return "/images/fries.jfif";
       case "sushi":
-        this.img.src = '/images/sushi.jfif'
-      break;
+        return "/images/sushi.jfif";
       case "potato":
-        this.img.src = '/images/potato.jpg'
-      break;
+        return "/images/potato.jpg";
     }
-
-    
   }
-  drawCards(){
-  ctx.drawImage(this.img, 0, 0, this.width, this.height)
-    
+  drawCards() {
+    ctx.drawImage(this.img, 0, 0, this.width, this.height);
   }
-
 }
 
+let newBoard = new Board([apple]);
 
 window.onload = () => {
   document.getElementById("home__btn").onclick = () => {
@@ -174,9 +152,12 @@ window.onload = () => {
   };
   btnStartGame.onclick = () => {
     game.startGame();
+    apple.drawCards();
   };
   function startGame() {
-    if (gameInterval) return;
-    gameInterval = setInterval(updateGame, 1000 / 60);
+    // if (gameInterval) return;
+    // gameInterval = setInterval(updateGame, 1000 / 60);
+    let apple = new Card("apple");
+    let burrito = new Card("burrito");
   }
 };
