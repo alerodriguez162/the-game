@@ -1,13 +1,74 @@
-body{
+@font-face {
+    font-family: Pixel;
+    src: url(fonts/ccoverbyteoffregular.otf);
+}
+
+
+.btn1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    font-family: Pixel;
+    font-size: 16px;
     background-image: url(/fondo\ 2-1.jpg);
     background-attachment: fixed;
     background-position: center;
 }
 
-.btn1{
-    display: flex;
-    flex-direction: row;
+h2 {
+    font-size: 6rem;
+    margin: 1rem 0px;
+}
+
+.game__over {
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: none;
     justify-content: center;
-align-items: center;
-    
+    align-items: center;
+    background-color: #80808073;
+}
+
+
+.game__over--container {
+    width: 600px;
+    background-color: pink;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.game__over--img {
+    width: 30%;
+    flex: 100%;
+}
+
+.game__over--score {
+    font-size: 2.5rem;
+}
+
+#home__btn {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+#home__btn img {
+    width: 40px;
 }
