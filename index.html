@@ -10,22 +10,22 @@
 </head>
 
 <body>
+    <canvas id="canvas"></canvas>
     <div class="btn1">
         <img src="/button1.png" alt="">
     </div>
-    <div class="game__over">
-        <div class="game__over--container">
-            <h2 class="game__over--title">GAME OVER</h2>
-            <span class="game__over--score">Score: xxxxxx</span>
-            <img class="game__over--img" src="./images/bonk.webp" alt="" srcset="">
-            <div class="game__over--buttons">
+    <div class="end__screen" id="looser&winner">
+        <div class="end__screen--container">
+            <h2 class="end__screen--title"></h2>
+            <span class="end__screen--score"></span>
+            <img class="end__screen--img" src="" alt="" srcset="">
+            <div class="end__screen--buttons">
                 <button id="home__btn"><img src="./images/home.png" alt=""></button>
-
             </div>
         </div>
-
     </div>
-
+    <button onclick="game.setLooserView()">Looser</button>
+    <button onclick="game.setWinnerView()">Winner</button>
     <script src="./index.js"></script>
 </body>
 

@@ -1,11 +1,31 @@
+const endScreen = document.getElementById("looser&winner");
+const endScreenTitle = document.querySelector(".end__screen--title");
+const endScreenScore = document.querySelector(".end__screen--score");
+const endScreenImg = document.querySelector(".end__screen--img");
+const canvas = document.getElementById("canvas");
+// ./images/bonk.webp
 const game = {
-  setWelcomeView: function () {},
+  setWelcomeView: function () {
+    endScreen.style.display = "none";
+  },
 
-  startGame: function () {},
+  startGame: function () {
+    canvas.style.display = "block";
+  },
 
-  setLooserView: function () {},
+  setLooserView: function (score) {
+    endScreenTitle.innerText = "Game Over";
+    endScreenScore.innerText = "Puntuacion: 9000";
+    endScreenImg.src = "./images/bonk.webp";
+    endScreen.style.display = "flex";
+  },
 
-  setWinnerView: function () {},
+  setWinnerView: function (score) {
+    endScreenTitle.innerText = "Winner!!";
+    endScreenScore.innerText = "Puntuacion: 9000";
+    endScreenImg.src = "./images/winner.gif";
+    endScreen.style.display = "flex";
+  },
 };
 
 class Timer {
@@ -37,6 +57,8 @@ class Timer {
 class Board {
   constructor(cards) {
     this.cards = cards;
+    this.looser = false;
+    this.winner = false;
   }
   //! Estara actualizando los Tablero completo
   drawCards() {}
@@ -52,6 +74,10 @@ class Board {
   selectSecondCard() {}
 
   linkCard() {}
+
+  checkIfWin() {}
+
+  checkIfLoose() {}
 }
 
 class Card {
@@ -62,3 +88,14 @@ class Card {
     this.height = height;
   }
 }
+
+window.onload = () => {
+  document.getElementById("home__btn").onclick = () => {
+    game.setWelcomeView();
+  };
+
+  function startGame() {
+    if (gameInterval) return;
+    gameInterval = setInterval(updateGame, 1000 / 60);
+  }
+};
