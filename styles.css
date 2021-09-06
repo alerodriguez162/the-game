@@ -58,13 +58,16 @@ body {
 
 }
 
+canvas {
+    display: none;
+}
+
 h2 {
     font-size: 6rem;
     margin: 1rem 0px;
 }
 
-.game__over {
-
+.end__screen {
     position: absolute;
     left: 0;
     right: 0;
@@ -77,9 +80,10 @@ h2 {
 }
 
 
-.game__over--container {
+.end__screen--container {
     width: 600px;
-    background-color: pink;
+    background-color: #f6f0c4;
+    background-image: linear-gradient(315deg, #f6f0c4 0%, #d99ec9 74%);
     border-radius: 5%;
     display: flex;
     flex-direction: column;
@@ -89,12 +93,12 @@ h2 {
 
 
 
-.game__over--img {
+.end__screen--img {
     width: 30%;
     flex: 100%;
 }
 
-.game__over--score {
+.end__screen--score {
     font-size: 2.5rem;
 }
 
