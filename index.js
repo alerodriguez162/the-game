@@ -3,13 +3,20 @@ const endScreenTitle = document.querySelector(".end__screen--title");
 const endScreenScore = document.querySelector(".end__screen--score");
 const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
+const infoList = document.querySelector(".info");
+const btnStartGame = document.getElementById("startGame");
 // ./images/bonk.webp
 const game = {
   setWelcomeView: function () {
     endScreen.style.display = "none";
+    infoList.style.display = "block";
+    btnStartGame.style.display = "block";
+    canvas.style.display = "none";
   },
 
   startGame: function () {
+    infoList.style.display = "none";
+    btnStartGame.style.display = "none";
     canvas.style.display = "block";
   },
 
@@ -90,11 +97,12 @@ class Card {
 }
 
 window.onload = () => {
-  game.setLooserView();
   document.getElementById("home__btn").onclick = () => {
     game.setWelcomeView();
   };
-
+  btnStartGame.onclick = () => {
+    game.startGame();
+  };
   function startGame() {
     if (gameInterval) return;
     gameInterval = setInterval(updateGame, 1000 / 60);
