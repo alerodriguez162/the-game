@@ -90,6 +90,7 @@ class Card {
 }
 
 window.onload = () => {
+  game.setLooserView();
   document.getElementById("home__btn").onclick = () => {
     game.setWelcomeView();
   };
