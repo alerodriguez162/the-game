@@ -14,12 +14,29 @@ let timer;
 // ./images/bonk.webp
 
 //Display time elements
-const minDecElement = document.getElementById('minDec');
-const minUniElement = document.getElementById('minUni');
-const secDecElement = document.getElementById('secDec');
-const secUniElement = document.getElementById('secUni');
+const minDecElement = document.getElementById("minDec");
+const minUniElement = document.getElementById("minUni");
+const secDecElement = document.getElementById("secDec");
+const secUniElement = document.getElementById("secUni");
 
+function printTime() {
+  printSeconds();
+  printMinutes();
+}
 
+function printMinutes() {
+  let minutes = chronometer.computeTwoDigitNumber(chronometer.getMinutes());
+  let splitMinutes = minutes.split("");
+  minDecElement.innerHTML = splitMinutes[0];
+  minUniElement.innerHTML = splitMinutes[1];
+}
+
+function printSeconds() {
+  let seconds = chronometer.computeTwoDigitNumber(chronometer.getSeconds());
+  let splitSeconds = seconds.split("");
+  secDecElement.innerHTML = splitSeconds[0];
+  secUniElement.innerHTML = splitSeconds[1];
+}
 
 const game = {
   setWelcomeView: function () {
@@ -84,6 +101,7 @@ class Timer {
   }
 
   removeTime() {
+<<<<<<< HEAD
    
     this.currentTime--;
  
@@ -126,6 +144,12 @@ class Timer {
     secUniElement.innerHTML = splitSeconds[1];
   }
 
+=======
+    this.currentTime--;
+  }
+
+  //TODO Agregar formateo de tiempo y retornarlo formateado 00:00 MM:SS
+>>>>>>> cf45b8e4385bdd3a75872d2b4e720f610018bb22
 }
 
 class Board {
@@ -299,3 +323,23 @@ function updateGame() {
   if (gameInterval) return;
   gameInterval = setInterval(game.updateGame, 1000 / 60);
 }
+
+canvas.addEventListener(
+  "click",
+  function (event) {
+    let x = event.pageX - canvas.offsetLeft;
+    let y = event.pageY - canvas.offsetTop;
+    // Collision detection between clicked offset and element.
+    board.cardsClass.forEach(function (card) {
+      if (
+        y > card.y &&
+        y < card.y + card.height &&
+        x > card.x &&
+        x < card.x + card.width
+      ) {
+        console.log(card);
+      }
+    });
+  },
+  false
+);
