@@ -5,7 +5,7 @@ const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
-const timer = new Timer()
+
 const ctx = canvas.getContext("2d");
 // ./images/bonk.webp
 
@@ -17,7 +17,6 @@ const secUniElement = document.getElementById('secUni');
 
 
 function printTime() {
-  printMilliseconds();
   printSeconds();
   printMinutes();
 }
@@ -41,6 +40,7 @@ function printSeconds() {
 
 const game = {
   board: null,
+  timer: null,
   setWelcomeView: function () {
     endScreen.style.display = "none";
     infoList.style.display = "block";
@@ -54,6 +54,8 @@ const game = {
     canvas.style.display = "block";
     this.board = new Board();
     this.board.drawCards();
+    this.timer = new Timer()
+    console.log(this.timer.start())
   },
 
   setLooserView: function (score) {
@@ -79,7 +81,7 @@ class Timer {
 
   start() {
     if (this.timerInterval) return;
-    this.timerInterval = setInterval(removeTime, 1000);
+    this.timerInterval = setInterval(this.removeTime, 1000);
   }
 
   stop() {
