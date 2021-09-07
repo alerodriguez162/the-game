@@ -91,6 +91,8 @@ class Board {
 class Card {
   //TODO Seleccion de cartas
   constructor(type, x, y) {
+    this.y = y
+    this.x = x
     this.type = type;
     this.width = 100;
     this.height = 100;
@@ -116,9 +118,7 @@ class Card {
       case "jocho":
         return "/images/cards/hotdog.jpg";
       case "muffin":
-        return "/images/cards/helado.jpg";
-      case "ice":
-        return "/images/cards/helado.jpg";
+        return "/images/cards/muffin.jpg";
       case "pizza":
         return "/images/cards/pizza.jpg";
       case "cheese":
@@ -159,5 +159,23 @@ window.onload = () => {
     // gameInterval = setInterval(updateGame, 1000 / 60);
     let apple = new Card("apple");
     let burrito = new Card("burrito");
+    let potato = new Card("potato");
+    let sushi = new Card("sushi");
+    let fries = new Card("fries");
+    let avocado = new Card("acovado");
+    let ramen = new Card("ramen");
+    let pizza = new Card("pizza");
+    let cheese = new Card("cheese");
+    let ice = new Card("ice");
+    let muffin = new Card("muffin");
+    let jocho = new Card("jocho")
+    let burger = new Card("burger");
+    let cookie = new Card("cookie");
+    let donut = new Card("donut");
+    let coffee = new Card("coffee")
+    let almond = new Card("almond")
+    let taco = new Card("taco")
+  
+  
   }
 };
