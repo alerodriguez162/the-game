@@ -5,11 +5,43 @@ const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
+const timer = new Timer()
 const ctx = canvas.getContext("2d");
 let gameInterval;
 let board;
 
 // ./images/bonk.webp
+
+//Display time elements
+const minDecElement = document.getElementById('minDec');
+const minUniElement = document.getElementById('minUni');
+const secDecElement = document.getElementById('secDec');
+const secUniElement = document.getElementById('secUni');
+
+
+function printTime() {
+  printMilliseconds();
+  printSeconds();
+  printMinutes();
+}
+
+function printMinutes() {
+
+  let minutes = chronometer.computeTwoDigitNumber(chronometer.getMinutes());
+  let splitMinutes = minutes.split('');
+  minDecElement.innerHTML = splitMinutes[0];
+  minUniElement.innerHTML = splitMinutes[1];
+}
+
+function printSeconds() {
+
+  let seconds = chronometer.computeTwoDigitNumber(chronometer.getSeconds());
+  let splitSeconds = seconds.split('');
+  secDecElement.innerHTML = splitSeconds[0];
+  secUniElement.innerHTML = splitSeconds[1];
+}
+
+
 const game = {
   setWelcomeView: function () {
     endScreen.style.display = "none";
@@ -70,6 +102,7 @@ class Timer {
   }
 
   //TODO Agregar formateo de tiempo y retornarlo formateado 00:00 MM:SS
+
 }
 
 class Board {
