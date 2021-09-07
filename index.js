@@ -40,6 +40,7 @@ function printSeconds() {
 
 
 const game = {
+  board: null,
   setWelcomeView: function () {
     endScreen.style.display = "none";
     infoList.style.display = "block";
@@ -51,7 +52,8 @@ const game = {
     infoList.style.display = "none";
     btnStartGame.style.display = "none";
     canvas.style.display = "block";
-    
+    this.board = new Board();
+    this.board.drawCards();
   },
 
   setLooserView: function (score) {
@@ -97,18 +99,51 @@ class Timer {
 }
 
 class Board {
-  constructor(cards) {
-    this.cards = cards;
+  constructor() {
+    this.cards = [
+      "apple",
+      "burrito",
+      "potato",
+      "sushi",
+      "fries",
+      "avocado",
+      "ramen",
+      "pizza",
+      "cheese",
+      "ice",
+      "muffin",
+      "jocho",
+      "burger",
+      "cookie",
+      "donut",
+      "coffee",
+      "almond",
+      "taco",
+    ];
     this.looser = false;
     this.winner = false;
   }
   //! Estara actualizando los Tablero completo
-  drawCards() {}
+  drawCards() {
+    let positionX = 0;
+    let positionY = 0;
+    let cardSize = 100;
+    let separation = 5;
+    for (let index = 0; index < this.cards.length * 2; index++) {
+      let card = new Card(this.cards[index], positionX, positionY);
+      card.drawCard();
+      positionX += cardSize += separation;
 
-  shuffleCards() {}
+      console.log(positionX);
+    }
+  }
+
+  shuffleCards() {
+    this.drawCards();
+  }
 
   start() {
-    shuffleCards();
+    this.shuffleCards();
   }
   //TODO Ver la forma de seleccionar cartas
   selectFirstCard() {}
@@ -125,8 +160,8 @@ class Board {
 class Card {
   //TODO Seleccion de cartas
   constructor(type, x, y) {
-    this.y = y
-    this.x = x
+    this.y = y;
+    this.x = x;
     this.type = type;
     this.width = 100;
     this.height = 100;
@@ -173,44 +208,22 @@ class Card {
         return "/images/potato.jpg";
     }
   }
-  drawCards() {
-    ctx.drawImage(this.img, 0, 0, this.width, this.height);
+  drawCard() {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 }
-
-let newBoard = new Board([apple]);
 
 window.onload = () => {
   document.getElementById("home__btn").onclick = () => {
     game.setWelcomeView();
   };
+
   btnStartGame.onclick = () => {
     game.startGame();
-    apple.drawCards();
-   
   };
+
   function startGame() {
-    // if (gameInterval) return;
-    // gameInterval = setInterval(updateGame, 1000 / 60);
-    let apple = new Card("apple");
-    let burrito = new Card("burrito");
-    let potato = new Card("potato");
-    let sushi = new Card("sushi");
-    let fries = new Card("fries");
-    let avocado = new Card("acovado");
-    let ramen = new Card("ramen");
-    let pizza = new Card("pizza");
-    let cheese = new Card("cheese");
-    let ice = new Card("ice");
-    let muffin = new Card("muffin");
-    let jocho = new Card("jocho")
-    let burger = new Card("burger");
-    let cookie = new Card("cookie");
-    let donut = new Card("donut");
-    let coffee = new Card("coffee")
-    let almond = new Card("almond")
-    let taco = new Card("taco")
-  
-  
+    if (gameInterval) return;
+    gameInterval = setInterval(updateGame, 1000 / 60);
   }
 };
