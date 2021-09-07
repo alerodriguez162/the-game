@@ -6,7 +6,7 @@ const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
 const timer1 = document.getElementById("timer1")
-
+const title1 = document.getElementById("title1")
 const ctx = canvas.getContext("2d");
 let gameInterval;
 let board;
@@ -55,6 +55,7 @@ const game = {
     timer = new Timer();
     timer.start();
     timer1.style.display = "block";
+    title1.style.display = "none"
   },
 
   setLooserView: function (score) {
@@ -101,7 +102,6 @@ class Timer {
   }
 
   removeTime() {
-<<<<<<< HEAD
    
     this.currentTime--;
  
@@ -144,12 +144,6 @@ class Timer {
     secUniElement.innerHTML = splitSeconds[1];
   }
 
-=======
-    this.currentTime--;
-  }
-
-  //TODO Agregar formateo de tiempo y retornarlo formateado 00:00 MM:SS
->>>>>>> cf45b8e4385bdd3a75872d2b4e720f610018bb22
 }
 
 class Board {
