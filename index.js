@@ -6,9 +6,11 @@ const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
 const ctx = canvas.getContext("2d");
+let gameInterval;
+let board;
+
 // ./images/bonk.webp
 const game = {
-  board: null,
   setWelcomeView: function () {
     endScreen.style.display = "none";
     infoList.style.display = "block";
@@ -20,8 +22,8 @@ const game = {
     infoList.style.display = "none";
     btnStartGame.style.display = "none";
     canvas.style.display = "block";
-    this.board = new Board();
-    this.board.drawCards();
+    board = new Board();
+    board.generateCards();
   },
 
   setLooserView: function (score) {
@@ -36,6 +38,11 @@ const game = {
     endScreenScore.innerText = "Puntuacion: 9000";
     endScreenImg.src = "./images/winner.gif";
     endScreen.style.display = "flex";
+  },
+
+  updateGame: function () {
+    if (!board) return;
+    board.drawCards();
   },
 };
 
@@ -86,32 +93,66 @@ class Board {
       "coffee",
       "almond",
       "taco",
+      "apple",
+      "burrito",
+      "potato",
+      "sushi",
+      "fries",
+      "avocado",
+      "ramen",
+      "pizza",
+      "cheese",
+      "ice",
+      "muffin",
+      "jocho",
+      "burger",
+      "cookie",
+      "donut",
+      "coffee",
+      "almond",
+      "taco",
     ];
     this.looser = false;
     this.winner = false;
+    this.cardsClass = [];
   }
-  //! Estara actualizando los Tablero completo
-  drawCards() {
+
+  generateCards() {
+    this.shuffleCards();
     let positionX = 0;
     let positionY = 0;
-    let cardSize = 100;
+    let cardSize = 120;
     let separation = 5;
-    for (let index = 0; index < this.cards.length * 2; index++) {
+    for (let index = 0; index < this.cards.length; index++) {
       let card = new Card(this.cards[index], positionX, positionY);
-      card.drawCard();
-      positionX += cardSize += separation;
-
-      console.log(positionX);
+      this.cardsClass.push(card);
+      positionX += cardSize + separation;
+      if (positionX >= 1125) {
+        positionX = 0;
+        positionY += cardSize + separation;
+      }
     }
   }
 
-  shuffleCards() {
-    this.drawCards();
+  drawCards() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.cardsClass.forEach((card) => card.drawCard());
   }
 
-  start() {
-    this.shuffleCards();
+  shuffleCards() {
+    let currentIndex = this.cards.length,
+      randomIndex;
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [this.cards[currentIndex], this.cards[randomIndex]] = [
+        this.cards[randomIndex],
+        this.cards[currentIndex],
+      ];
+    }
   }
+
   //TODO Ver la forma de seleccionar cartas
   selectFirstCard() {}
 
@@ -130,8 +171,8 @@ class Card {
     this.y = y;
     this.x = x;
     this.type = type;
-    this.width = 100;
-    this.height = 100;
+    this.width = 120;
+    this.height = 120;
     this.img = new Image();
     this.img.src = this.fruits();
   }
@@ -184,13 +225,16 @@ window.onload = () => {
   document.getElementById("home__btn").onclick = () => {
     game.setWelcomeView();
   };
-
+  document.getElementById("Shuffle").onclick = () => {
+    board.generateCards();
+  };
   btnStartGame.onclick = () => {
     game.startGame();
+    updateGame();
   };
-
-  function startGame() {
-    if (gameInterval) return;
-    gameInterval = setInterval(updateGame, 1000 / 60);
-  }
 };
+
+function updateGame() {
+  if (gameInterval) return;
+  gameInterval = setInterval(game.updateGame, 1000 / 60);
+}
