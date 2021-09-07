@@ -5,6 +5,7 @@ const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
+const timer1 = document.getElementById("timer1")
 
 const ctx = canvas.getContext("2d");
 let gameInterval;
@@ -18,27 +19,6 @@ const minUniElement = document.getElementById('minUni');
 const secDecElement = document.getElementById('secDec');
 const secUniElement = document.getElementById('secUni');
 
-
-function printTime() {
-  printSeconds();
-  printMinutes();
-}
-
-function printMinutes() {
-
-  let minutes = chronometer.computeTwoDigitNumber(chronometer.getMinutes());
-  let splitMinutes = minutes.split('');
-  minDecElement.innerHTML = splitMinutes[0];
-  minUniElement.innerHTML = splitMinutes[1];
-}
-
-function printSeconds() {
-
-  let seconds = chronometer.computeTwoDigitNumber(chronometer.getSeconds());
-  let splitSeconds = seconds.split('');
-  secDecElement.innerHTML = splitSeconds[0];
-  secUniElement.innerHTML = splitSeconds[1];
-}
 
 
 const game = {
@@ -56,8 +36,8 @@ const game = {
     board = new Board();
     board.generateCards();
     timer = new Timer();
-    timer.start()
-  
+    timer.start();
+    timer1.style.display = "block";
   },
 
   setLooserView: function (score) {
@@ -77,6 +57,7 @@ const game = {
   updateGame: function () {
     if (!board) return;
     board.drawCards();
+    board.checkIfLoose();
   },
 };
 
@@ -88,7 +69,10 @@ class Timer {
 
   start() {
     if (this.timerInterval) return;
-    this.timerInterval = setInterval(this.removeTime, 1000);
+    this.timerInterval = setInterval( () =>{
+      this.removeTime()
+      this.printTime()
+    } ,1000);
   }
 
   stop() {
@@ -100,12 +84,47 @@ class Timer {
   }
 
   removeTime() {
-    console.log(this.currentTime)
+   
     this.currentTime--;
-    console.log(this.currentTime)
+ 
   }
 
   //TODO Agregar formateo de tiempo y retornarlo formateado 00:00 MM:SS
+  
+  getMinutes(){
+    return Math.floor(this.currentTime / 60);
+  }
+
+  getSeconds(){
+    let minutes = this.getMinutes()
+    return this.currentTime - minutes * 60;
+  }
+
+  computeTwoDigitNumber(value) {
+    // ... your code goes here
+    if (value < 10) value = `0${value}`;
+    return `${value}`;
+  }
+
+  printTime() {
+    
+    this.printSeconds();
+    this.printMinutes();
+  }
+
+  printMinutes() {
+    let minutes = this.computeTwoDigitNumber(this.getMinutes());
+    let splitMinutes = minutes.split('');
+    minDecElement.innerHTML = splitMinutes[0];
+    minUniElement.innerHTML = splitMinutes[1];
+  }
+
+  printSeconds() {
+    let seconds = this.computeTwoDigitNumber(this.getSeconds());
+    let splitSeconds = seconds.split('');
+    secDecElement.innerHTML = splitSeconds[0];
+    secUniElement.innerHTML = splitSeconds[1];
+  }
 
 }
 
@@ -199,7 +218,12 @@ class Board {
 
   checkIfWin() {}
 
-  checkIfLoose() {}
+  checkIfLoose() {
+    if(timer.currentTime === 0){
+     timer.stop();
+     game.setLooserView();
+    }
+  }
 }
 
 class Card {
