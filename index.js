@@ -5,8 +5,9 @@ const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
-const timer1 = document.getElementById("timer1")
 const title1 = document.getElementById("title1")
+const gameBoard = document.getElementById("gameBoard");
+
 const ctx = canvas.getContext("2d");
 let gameInterval;
 let board;
@@ -43,18 +44,17 @@ const game = {
     endScreen.style.display = "none";
     infoList.style.display = "block";
     btnStartGame.style.display = "block";
-    canvas.style.display = "none";
+    gameBoard.style.display = "none";
   },
 
   startGame: function () {
     infoList.style.display = "none";
     btnStartGame.style.display = "none";
-    canvas.style.display = "block";
+    gameBoard.style.display = "flex";
     board = new Board();
     board.generateCards();
     timer = new Timer();
     timer.start();
-    timer1.style.display = "block";
     title1.style.display = "none"
   },
 
@@ -87,14 +87,15 @@ class Timer {
 
   start() {
     if (this.timerInterval) return;
-    this.timerInterval = setInterval( () =>{
-      this.removeTime()
-      this.printTime()
-    } ,1000);
+    this.timerInterval = setInterval(() => {
+      this.removeTime();
+      this.printTime();
+    }, 1000);
   }
 
   stop() {
     clearInterval(this.timerInterval);
+    this.currentTime = 20;
   }
 
   addTime(timeToAdd) {
@@ -104,17 +105,16 @@ class Timer {
   removeTime() {
    
     this.currentTime--;
- 
   }
 
   //TODO Agregar formateo de tiempo y retornarlo formateado 00:00 MM:SS
-  
-  getMinutes(){
+
+  getMinutes() {
     return Math.floor(this.currentTime / 60);
   }
 
-  getSeconds(){
-    let minutes = this.getMinutes()
+  getSeconds() {
+    let minutes = this.getMinutes();
     return this.currentTime - minutes * 60;
   }
 
@@ -125,25 +125,23 @@ class Timer {
   }
 
   printTime() {
-    
     this.printSeconds();
     this.printMinutes();
   }
 
   printMinutes() {
     let minutes = this.computeTwoDigitNumber(this.getMinutes());
-    let splitMinutes = minutes.split('');
+    let splitMinutes = minutes.split("");
     minDecElement.innerHTML = splitMinutes[0];
     minUniElement.innerHTML = splitMinutes[1];
   }
 
   printSeconds() {
     let seconds = this.computeTwoDigitNumber(this.getSeconds());
-    let splitSeconds = seconds.split('');
+    let splitSeconds = seconds.split("");
     secDecElement.innerHTML = splitSeconds[0];
     secUniElement.innerHTML = splitSeconds[1];
   }
-
 }
 
 class Board {
@@ -192,9 +190,12 @@ class Board {
   }
 
   generateCards() {
+    this.cardsClass = [];
+    this.firstCard;
+    this.secondCard;
     this.shuffleCards();
-    let positionX = 0;
-    let positionY = 0;
+    let positionX = 5;
+    let positionY = 5;
     let cardSize = 120;
     let separation = 5;
     for (let index = 0; index < this.cards.length; index++) {
@@ -202,7 +203,7 @@ class Board {
       this.cardsClass.push(card);
       positionX += cardSize + separation;
       if (positionX >= 1125) {
-        positionX = 0;
+        positionX = 5;
         positionY += cardSize + separation;
       }
     }
@@ -228,18 +229,22 @@ class Board {
   }
 
   //TODO Ver la forma de seleccionar cartas
-  selectFirstCard() {}
+  selectFirstCard(selectedCard) {
+    this.firstCard = selectedCard;
+  }
 
-  selectSecondCard() {}
+  selectSecondCard(selectedCard) {
+    this.secondCard = selectedCard;
+  }
 
   linkCard() {}
 
   checkIfWin() {}
 
   checkIfLoose() {
-    if(timer.currentTime === 0){
-     timer.stop();
-     game.setLooserView();
+    if (timer.currentTime === 0) {
+      timer.stop();
+      game.setLooserView();
     }
   }
 }
@@ -254,6 +259,7 @@ class Card {
     this.height = 120;
     this.img = new Image();
     this.img.src = this.fruits();
+    this.selected = false;
   }
   fruits() {
     switch (this.type) {
@@ -296,6 +302,11 @@ class Card {
     }
   }
   drawCard() {
+    if (this.selected) {
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "white";
+      ctx.strokeRect(this.x, this.y, this.height, this.width);
+    }
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 }
@@ -331,7 +342,7 @@ canvas.addEventListener(
         x > card.x &&
         x < card.x + card.width
       ) {
-        console.log(card);
+        card.selected = true;
       }
     });
   },

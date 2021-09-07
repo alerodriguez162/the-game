@@ -15,14 +15,15 @@
     font-family: pixelar;
     width: 100%;
     text-decoration: underline black;
-    margin-bottom: 10rem;
+    margin-bottom: 3rem;
+    position: relative;
 }
 
 .hocho {
     height: 90px;
     width: 130px;
-    transform: translateY(-10px);
-
+    position: absolute;
+    top: 20px;
 }
 
 
@@ -61,6 +62,25 @@
 
 }
 
+#gameBoard {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.statusBar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-content: stretch;
+    width: 100%;
+    max-width: 1135px;
+    background-color: #f6f0c4;
+    background-image: linear-gradient(315deg, #f6f0c4 0%, #d99ec9 74%);
+}
+
 body {
     font-family: Pixel;
     font-size: 16px;
@@ -71,23 +91,19 @@ body {
 }
 
 canvas {
-    display: none;
     background-color: #f6f0c4;
     background-image: linear-gradient(315deg, #f6f0c4 0%, #d99ec9 74%);
 }
 
-.timer{
-    display: none;   
+.timer {
     color: black;
     font-size: 40px;
-    background-color: white;
-    margin-bottom: 600px;
-    transform: translateX(300px);
+
 }
 
-.shfl1{
-    margin-bottom: 600px; 
-    transform: translateX(1100px);
+.shfl1 {
+    // margin-bottom: 600px; 
+    // transform: translateX(1100px);
 }
 
 
@@ -144,4 +160,3 @@ h2 {
 #home__btn img {
     width: 40px;
 }
-
