@@ -5,7 +5,7 @@ const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
 const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
-const title1 = document.getElementById("title1")
+const title1 = document.getElementById("title1");
 const gameBoard = document.getElementById("gameBoard");
 
 const ctx = canvas.getContext("2d");
@@ -55,7 +55,7 @@ const game = {
     board.generateCards();
     timer = new Timer();
     timer.start();
-    title1.style.display = "none"
+    title1.style.display = "none";
   },
 
   setLooserView: function (score) {
@@ -103,7 +103,6 @@ class Timer {
   }
 
   removeTime() {
-   
     this.currentTime--;
   }
 
@@ -187,12 +186,13 @@ class Board {
     this.looser = false;
     this.winner = false;
     this.cardsClass = [];
+    this.firstCard;
+    this.secondCard;
+    this.score = 0;
   }
 
   generateCards() {
     this.cardsClass = [];
-    this.firstCard;
-    this.secondCard;
     this.shuffleCards();
     let positionX = 5;
     let positionY = 5;
@@ -211,7 +211,9 @@ class Board {
 
   drawCards() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    this.cardsClass.forEach((card) => card.drawCard());
+    this.cardsClass.forEach((card) => {
+      if (card) card.drawCard();
+    });
   }
 
   shuffleCards() {
@@ -229,15 +231,36 @@ class Board {
   }
 
   //TODO Ver la forma de seleccionar cartas
-  selectFirstCard(selectedCard) {
-    this.firstCard = selectedCard;
+  selectFirstCard(selectedCard, index) {
+    this.firstCard = {
+      selectedCard: selectedCard,
+      index: index,
+    };
   }
 
-  selectSecondCard(selectedCard) {
-    this.secondCard = selectedCard;
+  selectSecondCard(selectedCard, index) {
+    this.secondCard = {
+      selectedCard: selectedCard,
+      index: index,
+    };
   }
 
-  linkCard() {}
+  linkCard() {
+    if (
+      this.firstCard.selectedCard.type === this.secondCard.selectedCard.type
+    ) {
+      this.cardsClass.splice(this.firstCard.index, 1, null);
+      this.cardsClass.splice(this.secondCard.index, 1, null);
+      this.cards = this.cards.filter((card) => {
+        return card !== this.firstCard.selectedCard.type;
+      });
+    } else {
+      this.cardsClass[this.firstCard.index].selected = false;
+      this.cardsClass[this.secondCard.index].selected = false;
+    }
+    this.firstCard = null;
+    this.secondCard = null;
+  }
 
   checkIfWin() {}
 
@@ -335,14 +358,23 @@ canvas.addEventListener(
     let x = event.pageX - canvas.offsetLeft;
     let y = event.pageY - canvas.offsetTop;
     // Collision detection between clicked offset and element.
-    board.cardsClass.forEach(function (card) {
+    board.cardsClass.forEach((card, i) => {
       if (
+        card &&
         y > card.y &&
         y < card.y + card.height &&
         x > card.x &&
         x < card.x + card.width
       ) {
-        card.selected = true;
+        if (!board.firstCard) {
+          card.selected = true;
+          board.selectFirstCard(card, i);
+        } else if (!board.secondCard) {
+          card.selected = true;
+
+          board.selectSecondCard(card, i);
+          board.linkCard();
+        }
       }
     });
   },
