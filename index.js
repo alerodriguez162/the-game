@@ -9,7 +9,7 @@ const btnStartGame = document.getElementById("startGame");
 const ctx = canvas.getContext("2d");
 let gameInterval;
 let board;
-let timer
+let timer;
 // ./images/bonk.webp
 
 //Display time elements
@@ -55,6 +55,9 @@ const game = {
     canvas.style.display = "block";
     board = new Board();
     board.generateCards();
+    timer = new Timer();
+    timer.start()
+  
   },
 
   setLooserView: function (score) {
@@ -97,7 +100,9 @@ class Timer {
   }
 
   removeTime() {
+    console.log(this.currentTime)
     this.currentTime--;
+    console.log(this.currentTime)
   }
 
   //TODO Agregar formateo de tiempo y retornarlo formateado 00:00 MM:SS
