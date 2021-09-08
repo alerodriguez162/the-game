@@ -60,14 +60,14 @@ const game = {
 
   setLooserView: function (score) {
     endScreenTitle.innerText = "Game Over";
-    endScreenScore.innerText = "Puntuacion: 9000";
+    endScreenScore.innerText = `Puntuacion: ${score}`;
     endScreenImg.src = "./images/bonk.webp";
     endScreen.style.display = "flex";
   },
 
   setWinnerView: function (score) {
     endScreenTitle.innerText = "Winner!!";
-    endScreenScore.innerText = "Puntuacion: 9000";
+    endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/winner.gif";
     endScreen.style.display = "flex";
   },
@@ -82,7 +82,7 @@ const game = {
 
 class Timer {
   constructor() {
-    this.currentTime = 120;
+    this.currentTime = 10;
     this.timerInterval;
   }
 
@@ -96,7 +96,7 @@ class Timer {
 
   stop() {
     clearInterval(this.timerInterval);
-    this.currentTime = 20;
+    this.currentTime = 60;
   }
 
   addTime(timeToAdd) {
@@ -253,6 +253,7 @@ class Board {
       this.cardsClass.splice(this.firstCard.index, 1, null);
       this.cardsClass.splice(this.secondCard.index, 1, null);
       this.cards = this.cards.filter((card) => {
+        timer.currentTime += 0.1;
         return card !== this.firstCard.selectedCard.type;
       });
     } else {
@@ -265,9 +266,11 @@ class Board {
 
   checkIfWin() {
     //agregar pantalla inicio cuando no hayan fichas
-    if(this.cards.length == 0){
+    if(this.cards.length == 0 && !this.winner  ){
+      this.winner = true
+      console.log(timer.currentTime)
+      game.setWinnerView(timer.currentTime * 10)
       timer.stop();
-      game.setWinnerView()
     }
   }
 
