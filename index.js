@@ -45,6 +45,7 @@ const game = {
     infoList.style.display = "block";
     btnStartGame.style.display = "block";
     gameBoard.style.display = "none";
+    title1.style.display = "block";
   },
 
   startGame: function () {
@@ -60,7 +61,7 @@ const game = {
 
   setLooserView: function (score) {
     endScreenTitle.innerText = "Game Over";
-    endScreenScore.innerText = `Puntuacion: ${score}`;
+    endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/bonk.webp";
     endScreen.style.display = "flex";
   },
@@ -82,7 +83,7 @@ const game = {
 
 class Timer {
   constructor() {
-    this.currentTime = 10;
+    this.currentTime = 60;
     this.timerInterval;
   }
 
@@ -190,7 +191,6 @@ class Board {
     this.firstCard;
     this.secondCard;
     this.score = 0;
-    this.couples = []
   }
 
   generateCards() {
@@ -219,6 +219,12 @@ class Board {
   }
 
   shuffleCards() {
+    // this.cards = this.cards.sort((a, b) => {
+    //   if (!a || !b) return 0;
+
+    //   return 0.5 - Math.random();
+    // });
+    // console.log(this.cards);
     let currentIndex = this.cards.length,
       randomIndex;
     while (currentIndex != 0) {
@@ -254,9 +260,16 @@ class Board {
       this.cardsClass.splice(this.firstCard.index, 1, null);
       this.cardsClass.splice(this.secondCard.index, 1, null);
       this.cards = this.cards.filter((card) => {
-        timer.currentTime += 0.1;
         return card !== this.firstCard.selectedCard.type;
       });
+      // let indexes = this.getAllIndexes(
+      //   this.cards,
+      //   this.firstCard.selectedCard.type
+      // );
+      // this.cards.splice(indexes[0], 1, null);
+      // this.cards.splice(indexes[1], 1, null);
+      timer.currentTime++;
+      this.score++;
     } else {
       this.cardsClass[this.firstCard.index].selected = false;
       this.cardsClass[this.secondCard.index].selected = false;
@@ -265,21 +278,29 @@ class Board {
     this.secondCard = null;
   }
 
+  // getAllIndexes(arr, val) {
+  //   var indexes = [],
+  //     i = -1;
+  //   while ((i = arr.indexOf(val, i + 1)) != -1) {
+  //     indexes.push(i);
+  //   }
+  //   return indexes;
+  // }
+
   checkIfWin() {
     //agregar pantalla inicio cuando no hayan fichas
-    if(this.cards.length == 0 && !this.winner  ){
-      this.winner = true
-      game.setWinnerView(timer.currentTime * 10)
+    if (this.cards.length == 0 && !this.winner) {
+      this.winner = true;
+      game.setWinnerView(this.score * 20);
       timer.stop();
     }
   }
 
   checkIfLoose() {
-    if (timer.currentTime === 0 ) {
-      
-      console.log(timer.currentTime)
+    if (timer.currentTime === 0 && !this.looser) {
+      this.looser = true;
+      game.setLooserView(this.score * 20);
       timer.stop();
-      game.setLooserView();
     }
   }
 }
@@ -325,21 +346,23 @@ class Card {
       case "taco":
         return "/images/cards/taco.jpg";
       case "avocado":
-        return "/images/aguacate.png";
+        return "/images/cards/aguacate.png";
       case "burrito":
-        return "/images/burrito.jfif";
+        return "/images/cards/burrito.jfif";
       case "fries":
-        return "/images/fries.jfif";
+        return "/images/cards/fries.jfif";
       case "sushi":
-        return "/images/sushi.jfif";
+        return "/images/cards/sushi.jfif";
       case "potato":
-        return "/images/potato.jpg";
+        return "/images/cards/potato.jpg";
+      default:
+        return null;
     }
   }
   drawCard() {
     if (this.selected) {
       ctx.lineWidth = 5;
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = "black";
       ctx.strokeRect(this.x, this.y, this.height, this.width);
     }
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
