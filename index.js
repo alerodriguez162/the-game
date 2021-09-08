@@ -190,6 +190,7 @@ class Board {
     this.firstCard;
     this.secondCard;
     this.score = 0;
+    this.couples = []
   }
 
   generateCards() {
@@ -268,14 +269,15 @@ class Board {
     //agregar pantalla inicio cuando no hayan fichas
     if(this.cards.length == 0 && !this.winner  ){
       this.winner = true
-      console.log(timer.currentTime)
       game.setWinnerView(timer.currentTime * 10)
       timer.stop();
     }
   }
 
   checkIfLoose() {
-    if (timer.currentTime === 0) {
+    if (timer.currentTime === 0 ) {
+      
+      console.log(timer.currentTime)
       timer.stop();
       game.setLooserView();
     }
