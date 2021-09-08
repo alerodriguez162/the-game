@@ -76,6 +76,7 @@ const game = {
     if (!board) return;
     board.drawCards();
     board.checkIfLoose();
+    board.checkIfWin()
   },
 };
 
@@ -262,7 +263,13 @@ class Board {
     this.secondCard = null;
   }
 
-  checkIfWin() {}
+  checkIfWin() {
+    //agregar pantalla inicio cuando no hayan fichas
+    if(this.cards.length == 0){
+      timer.stop();
+      game.setWinnerView()
+    }
+  }
 
   checkIfLoose() {
     if (timer.currentTime === 0) {
@@ -350,6 +357,7 @@ window.onload = () => {
 function updateGame() {
   if (gameInterval) return;
   gameInterval = setInterval(game.updateGame, 1000 / 60);
+  
 }
 
 canvas.addEventListener(
