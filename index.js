@@ -76,7 +76,7 @@ const game = {
     if (!board) return;
     board.drawCards();
     board.checkIfLoose();
-    board.checkIfWin()
+    board.checkIfWin();
   },
 };
 
@@ -362,7 +362,6 @@ window.onload = () => {
 function updateGame() {
   if (gameInterval) return;
   gameInterval = setInterval(game.updateGame, 1000 / 60);
-  
 }
 
 canvas.addEventListener(
@@ -379,14 +378,16 @@ canvas.addEventListener(
         x > card.x &&
         x < card.x + card.width
       ) {
-        if (!board.firstCard) {
+        if (!board.firstCard && !card.selected) {
           card.selected = true;
           board.selectFirstCard(card, i);
-        } else if (!board.secondCard) {
+        } else if (!board.secondCard && !card.selected) {
           card.selected = true;
-
           board.selectSecondCard(card, i);
           board.linkCard();
+        } else {
+          board.firstCard = null;
+          card.selected = false;
         }
       }
     });
