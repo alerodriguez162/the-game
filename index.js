@@ -3,11 +3,12 @@ const endScreenTitle = document.querySelector(".end__screen--title");
 const endScreenScore = document.querySelector(".end__screen--score");
 const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
-const infoList = document.querySelector(".info");
+const welcomeViewContainer = document.querySelector(".welcome__view--container");
 const btnStartGame = document.getElementById("startGame");
 const title1 = document.getElementById("title1");
 const gameBoard = document.getElementById("gameBoard");
-
+const form = document.getElementById("form");
+const leaderBoard = document.getElementById("leader__board--ul");
 const ctx = canvas.getContext("2d");
 let gameInterval;
 let board;
@@ -42,15 +43,13 @@ function printSeconds() {
 const game = {
   setWelcomeView: function () {
     endScreen.style.display = "none";
-    infoList.style.display = "block";
-    btnStartGame.style.display = "block";
+    welcomeViewContainer.style.display = "flex";
     gameBoard.style.display = "none";
     title1.style.display = "block";
   },
 
   startGame: function () {
-    infoList.style.display = "none";
-    btnStartGame.style.display = "none";
+    welcomeViewContainer.style.display = "none";
     gameBoard.style.display = "flex";
     board = new Board();
     board.generateCards();
@@ -60,6 +59,7 @@ const game = {
   },
 
   setLooserView: function (score) {
+    console.log(JSON.stringify(score, null, 2));
     endScreenTitle.innerText = "Game Over";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/bonk.webp";
@@ -67,6 +67,8 @@ const game = {
   },
 
   setWinnerView: function (score) {
+    console.log(JSON.stringify(score, null, 2));
+
     endScreenTitle.innerText = "Winner!!";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/winner.gif";
@@ -83,7 +85,7 @@ const game = {
 
 class Timer {
   constructor() {
-    this.currentTime = 60;
+    this.currentTime = 5;
     this.timerInterval;
   }
 
@@ -231,10 +233,7 @@ class Board {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
-      [this.cards[currentIndex], this.cards[randomIndex]] = [
-        this.cards[randomIndex],
-        this.cards[currentIndex],
-      ];
+      [this.cards[currentIndex], this.cards[randomIndex]] = [this.cards[randomIndex], this.cards[currentIndex]];
     }
   }
 
@@ -254,9 +253,7 @@ class Board {
   }
 
   linkCard() {
-    if (
-      this.firstCard.selectedCard.type === this.secondCard.selectedCard.type
-    ) {
+    if (this.firstCard.selectedCard.type === this.secondCard.selectedCard.type) {
       this.cardsClass.splice(this.firstCard.index, 1, null);
       this.cardsClass.splice(this.secondCard.index, 1, null);
       this.cards = this.cards.filter((card) => {
@@ -269,7 +266,7 @@ class Board {
       // this.cards.splice(indexes[0], 1, null);
       // this.cards.splice(indexes[1], 1, null);
       timer.currentTime++;
-      this.score++;
+      this.score += timer.currentTime * 0.5 * 5;
     } else {
       this.cardsClass[this.firstCard.index].selected = false;
       this.cardsClass[this.secondCard.index].selected = false;
@@ -291,7 +288,7 @@ class Board {
     //agregar pantalla inicio cuando no hayan fichas
     if (this.cards.length == 0 && !this.winner) {
       this.winner = true;
-      game.setWinnerView(this.score * 20);
+      game.setWinnerView(this.score);
       timer.stop();
     }
   }
@@ -299,7 +296,7 @@ class Board {
   checkIfLoose() {
     if (timer.currentTime === 0 && !this.looser) {
       this.looser = true;
-      game.setLooserView(this.score * 20);
+      game.setLooserView(this.score);
       timer.stop();
     }
   }
@@ -370,14 +367,38 @@ class Card {
 }
 
 window.onload = () => {
-  document.getElementById("home__btn").onclick = () => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let contents = leaderBoard.querySelectorAll("li");
+
+    let list = [];
+    list.push({
+      name: e.target.elements.name.value,
+      score: board.score,
+    });
+    for (var i = 0; i < contents.length; i++) {
+      let splitLi = contents[i].innerText.split(":");
+      list.push({
+        name: splitLi[0].trim(),
+        score: splitLi[1].trim(),
+      });
+    }
+    leaderBoard.innerHTML = null;
+    list.sort((a, b) => b.score - a.score);
+    list.forEach((item) => {
+      leaderBoard.innerHTML += `<li>${item.name}: ${item.score}</li>`;
+    });
+    form.reset();
     game.setWelcomeView();
-  };
+  });
+
   document.getElementById("Shuffle").onclick = () => {
     board.generateCards();
   };
   btnStartGame.onclick = () => {
     game.startGame();
+
     updateGame();
   };
 };
@@ -394,13 +415,7 @@ canvas.addEventListener(
     let y = event.pageY - canvas.offsetTop;
     // Collision detection between clicked offset and element.
     board.cardsClass.forEach((card, i) => {
-      if (
-        card &&
-        y > card.y &&
-        y < card.y + card.height &&
-        x > card.x &&
-        x < card.x + card.width
-      ) {
+      if (card && y > card.y && y < card.y + card.height && x > card.x && x < card.x + card.width) {
         if (!board.firstCard && !card.selected) {
           card.selected = true;
           board.selectFirstCard(card, i);
