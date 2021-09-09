@@ -11,7 +11,8 @@ const form = document.getElementById("form");
 const leaderBoard = document.getElementById("leader__board--ul");
 const playAudioWelcome = document.getElementById("playMusic");
 const ctx = canvas.getContext("2d");
-
+const text = document.getElementById("playStop");
+const img = playAudioWelcome.getElementsByTagName("img")[0];
 const welcomeAudio = generateAudioTags("./audio/welcome.mp3");
 const looserAudio = generateAudioTags("./audio/lose.mp3");
 const winnerAudio = generateAudioTags("./audio/winner.mp3");
@@ -32,6 +33,7 @@ const secUniElement = document.getElementById("secUni");
 function generateAudioTags(source) {
   let audio = document.createElement("audio");
   audio.load();
+  audio.volume = 0.3;
   audio.src = source;
   return audio;
 }
@@ -55,7 +57,13 @@ const game = {
   },
 
   setLooserView: function (score) {
+    welcomeAudio.pause();
+    welcomeAudio.currentTime = 0;
     looserAudio.play();
+    text.innerText = "Play Music";
+    let img = playAudioWelcome.getElementsByTagName("img")[0];
+    img.style.width = "80px";
+    img.src = "./images/play.png";
     endScreenTitle.innerText = "Game Over";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/bonk.webp";
@@ -64,7 +72,12 @@ const game = {
 
   setWinnerView: function (score) {
     winnerAudio.play();
-
+    welcomeAudio.pause();
+    welcomeAudio.currentTime = 0;
+    text.innerText = "Play Music";
+    let img = playAudioWelcome.getElementsByTagName("img")[0];
+    img.style.width = "80px";
+    img.src = "./images/play.png";
     endScreenTitle.innerText = "Winner!!";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/winner.gif";
@@ -95,7 +108,7 @@ class Timer {
 
   stop() {
     clearInterval(this.timerInterval);
-    this.currentTime = 60;
+    this.currentTime = 30;
   }
 
   addTime(timeToAdd) {
@@ -365,16 +378,13 @@ class Card {
 
 window.onload = () => {
   playAudioWelcome.onclick = () => {
-    let text = document.getElementById("playStop");
     if (text.innerText === "Play Music") {
       text.innerText = "Stop Music";
-      let img = playAudioWelcome.getElementsByTagName("img")[0];
       img.src = "./images/pause.png";
       img.style.width = "53px";
       welcomeAudio.play();
     } else {
       text.innerText = "Play Music";
-      let img = playAudioWelcome.getElementsByTagName("img")[0];
       img.style.width = "80px";
       img.src = "./images/play.png";
       welcomeAudio.pause();
