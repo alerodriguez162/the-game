@@ -81,7 +81,7 @@ const game = {
 
 class Timer {
   constructor() {
-    this.currentTime = 5;
+    this.currentTime = 30;
     this.timerInterval;
   }
 
