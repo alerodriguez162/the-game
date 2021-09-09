@@ -12,14 +12,22 @@
 <body>
 
     <div class="btn1">
-        <div class="title" id="title1" >Food Friends <img class="hocho" src="/images/hot dog.png" alt=""></div>
-        <div class="info">
-            <ul class="instruc">¡Bienvenido a Food Friends!<br><br>
-                <li>Instrucciones: Debes ayudar a los food friends
-                    a encontrar su pareja.</li><br>
-                <li>Cada vez conectes una pareja,
-                    vas a ganar tiempo de vida.</li>
-            </ul>
+        <div class="title" id="title1">Food Friends <img class="hocho" src="/images/hot dog.png" alt=""></div>
+        <div class="welcome__view--container">
+            <div class="info">
+                <h3>¡Bienvenido a Food Friends!</h3>
+                <ul class="instruc">
+                    <li>Instrucciones: Debes ayudar a los food friends a encontrar su pareja.</li>
+                    <li>Cada vez conectes una pareja, ganaras tiempo para continuar tu aventura.</li>
+                </ul>
+            </div>
+            <button id="startGame"><img src="/button1.png" alt=""></button>
+            <div class="leader__board--container">
+                <h3>Leader Board</h3>
+                <ul id="leader__board--ul">
+
+                </ul>
+            </div>
         </div>
 
         
@@ -38,7 +46,7 @@
                     <span id="secUni" class="number">0</span>
                 </div>
 
-                <button id="Shuffle" class="shfl1">Shuffle</button>
+                <button id="Shuffle" class="shfl1"><img src="./images/shuffle.png" alt=""></button>
             </div>
             <canvas id="canvas" width="1135" height="510"></canvas>
         </div>
@@ -49,7 +57,9 @@
             <span class="end__screen--score"></span>
             <img class="end__screen--img" src="" alt="" srcset="">
             <div class="end__screen--buttons">
-                <button id="home__btn"><img src="./images/home.png" alt=""></button>
+                <form id="form">
+                    <input type="text" required name="name" id="name" placeholder="Ingrese su nombre"> <button type="submit" id="home__btn"><img src="./images/home.png" alt=""></button>
+                </form>
             </div>
         </div>
     </div>

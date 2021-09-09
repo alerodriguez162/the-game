@@ -3,13 +3,15 @@ const endScreenTitle = document.querySelector(".end__screen--title");
 const endScreenScore = document.querySelector(".end__screen--score");
 const endScreenImg = document.querySelector(".end__screen--img");
 const canvas = document.getElementById("canvas");
-const infoList = document.querySelector(".info");
+const welcomeViewContainer = document.querySelector(".welcome__view--container");
 const btnStartGame = document.getElementById("startGame");
 const title1 = document.getElementById("title1");
 const gameBoard = document.getElementById("gameBoard");
 var audio = document.getElementById("audio");
 audio.play();
 
+const form = document.getElementById("form");
+const leaderBoard = document.getElementById("leader__board--ul");
 const ctx = canvas.getContext("2d");
 let gameInterval;
 let board;
@@ -44,14 +46,13 @@ function printSeconds() {
 const game = {
   setWelcomeView: function () {
     endScreen.style.display = "none";
-    infoList.style.display = "block";
-    btnStartGame.style.display = "block";
+    welcomeViewContainer.style.display = "flex";
     gameBoard.style.display = "none";
+    title1.style.display = "block";
   },
 
   startGame: function () {
-    infoList.style.display = "none";
-    btnStartGame.style.display = "none";
+    welcomeViewContainer.style.display = "none";
     gameBoard.style.display = "flex";
     board = new Board();
     board.generateCards();
@@ -62,13 +63,16 @@ const game = {
   },
 
   setLooserView: function (score) {
+    console.log(JSON.stringify(score, null, 2));
     endScreenTitle.innerText = "Game Over";
-    endScreenScore.innerText = `Puntuacion: ${score}`;
+    endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/bonk.webp";
     endScreen.style.display = "flex";
   },
 
   setWinnerView: function (score) {
+    console.log(JSON.stringify(score, null, 2));
+
     endScreenTitle.innerText = "Winner!!";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/winner.gif";
@@ -193,7 +197,6 @@ class Board {
     this.firstCard;
     this.secondCard;
     this.score = 0;
-    this.couples = []
   }
 
   generateCards() {
@@ -222,16 +225,19 @@ class Board {
   }
 
   shuffleCards() {
+    // this.cards = this.cards.sort((a, b) => {
+    //   if (!a || !b) return 0;
+
+    //   return 0.5 - Math.random();
+    // });
+    // console.log(this.cards);
     let currentIndex = this.cards.length,
       randomIndex;
     while (currentIndex != 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
-      [this.cards[currentIndex], this.cards[randomIndex]] = [
-        this.cards[randomIndex],
-        this.cards[currentIndex],
-      ];
+      [this.cards[currentIndex], this.cards[randomIndex]] = [this.cards[randomIndex], this.cards[currentIndex]];
     }
   }
 
@@ -251,15 +257,20 @@ class Board {
   }
 
   linkCard() {
-    if (
-      this.firstCard.selectedCard.type === this.secondCard.selectedCard.type
-    ) {
+    if (this.firstCard.selectedCard.type === this.secondCard.selectedCard.type) {
       this.cardsClass.splice(this.firstCard.index, 1, null);
       this.cardsClass.splice(this.secondCard.index, 1, null);
       this.cards = this.cards.filter((card) => {
-        timer.currentTime += 0.1;
         return card !== this.firstCard.selectedCard.type;
       });
+      // let indexes = this.getAllIndexes(
+      //   this.cards,
+      //   this.firstCard.selectedCard.type
+      // );
+      // this.cards.splice(indexes[0], 1, null);
+      // this.cards.splice(indexes[1], 1, null);
+      timer.currentTime++;
+      this.score += timer.currentTime * 0.5 * 5;
     } else {
       this.cardsClass[this.firstCard.index].selected = false;
       this.cardsClass[this.secondCard.index].selected = false;
@@ -268,21 +279,29 @@ class Board {
     this.secondCard = null;
   }
 
+  // getAllIndexes(arr, val) {
+  //   var indexes = [],
+  //     i = -1;
+  //   while ((i = arr.indexOf(val, i + 1)) != -1) {
+  //     indexes.push(i);
+  //   }
+  //   return indexes;
+  // }
+
   checkIfWin() {
     //agregar pantalla inicio cuando no hayan fichas
-    if(this.cards.length == 0 && !this.winner  ){
-      this.winner = true
-      game.setWinnerView(timer.currentTime * 10)
+    if (this.cards.length == 0 && !this.winner) {
+      this.winner = true;
+      game.setWinnerView(this.score);
       timer.stop();
     }
   }
 
   checkIfLoose() {
-    if (timer.currentTime === 0 ) {
-      
-      console.log(timer.currentTime)
+    if (timer.currentTime === 0 && !this.looser) {
+      this.looser = true;
+      game.setLooserView(this.score);
       timer.stop();
-      game.setLooserView();
     }
   }
 }
@@ -328,21 +347,23 @@ class Card {
       case "taco":
         return "/images/cards/taco.jpg";
       case "avocado":
-        return "/images/aguacate.png";
+        return "/images/cards/aguacate.png";
       case "burrito":
-        return "/images/burrito.jfif";
+        return "/images/cards/burrito.jfif";
       case "fries":
-        return "/images/fries.jfif";
+        return "/images/cards/fries.jfif";
       case "sushi":
-        return "/images/sushi.jfif";
+        return "/images/cards/sushi.jfif";
       case "potato":
-        return "/images/potato.jpg";
+        return "/images/cards/potato.jpg";
+      default:
+        return null;
     }
   }
   drawCard() {
     if (this.selected) {
       ctx.lineWidth = 5;
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = "black";
       ctx.strokeRect(this.x, this.y, this.height, this.width);
     }
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -350,14 +371,38 @@ class Card {
 }
 
 window.onload = () => {
-  document.getElementById("home__btn").onclick = () => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let contents = leaderBoard.querySelectorAll("li");
+
+    let list = [];
+    list.push({
+      name: e.target.elements.name.value,
+      score: board.score,
+    });
+    for (var i = 0; i < contents.length; i++) {
+      let splitLi = contents[i].innerText.split(":");
+      list.push({
+        name: splitLi[0].trim(),
+        score: splitLi[1].trim(),
+      });
+    }
+    leaderBoard.innerHTML = null;
+    list.sort((a, b) => b.score - a.score);
+    list.forEach((item) => {
+      leaderBoard.innerHTML += `<li>${item.name}: ${item.score}</li>`;
+    });
+    form.reset();
     game.setWelcomeView();
-  };
+  });
+
   document.getElementById("Shuffle").onclick = () => {
     board.generateCards();
   };
   btnStartGame.onclick = () => {
     game.startGame();
+
     updateGame();
   };
 };
@@ -374,13 +419,7 @@ canvas.addEventListener(
     let y = event.pageY - canvas.offsetTop;
     // Collision detection between clicked offset and element.
     board.cardsClass.forEach((card, i) => {
-      if (
-        card &&
-        y > card.y &&
-        y < card.y + card.height &&
-        x > card.x &&
-        x < card.x + card.width
-      ) {
+      if (card && y > card.y && y < card.y + card.height && x > card.x && x < card.x + card.width) {
         if (!board.firstCard && !card.selected) {
           card.selected = true;
           board.selectFirstCard(card, i);

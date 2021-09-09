@@ -26,15 +26,58 @@
     top: 20px;
 }
 
+.leader__board--container h3,
+.info h3 {
+    text-align: center;
+}
 
-.info {
-    min-height: 500px;
+input:focus {
+    outline: none;
+}
+
+.end__screen--buttons {
+    padding-bottom: 10px;
+}
+
+.end__screen--buttons form {
+    display: flex;
+    align-items: center;
+}
+
+#name {
+    border-color: #cccccc;
+    box-shadow: 0px 0px 5px 0px rgb(42 42 42 / 75%);
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 0px;
+    font-size: 18px;
+    padding: 8px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+#timer1 {
+    // max-width: 100px;
+}
+
+.info,
+.leader__board--container {
     color: black;
     background-color: white;
     width: 280px;
     font-size: 26px;
     border-radius: 15px;
-    padding-right: 19px;
+    padding: 20px;
+}
+
+.instruc,
+.leader__board--ul {
+    margin: unset;
+}
+
+.instruc li,
+leader__board--ul li {
+    margin: 10px 0;
 }
 
 #startGame {
@@ -62,6 +105,19 @@
 
 }
 
+.welcome__view--container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1440px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0 auto;
+    align-items: stretch;
+    align-content: center;
+}
+
 #gameBoard {
     display: none;
     flex-direction: row;
@@ -71,20 +127,22 @@
 }
 
 .statusBar {
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-content: stretch;
     width: 100%;
-    max-width: 1135px;
+    max-width: 1105px;
     background-color: #f6f0c4;
     background-image: linear-gradient(315deg, #f6f0c4 0%, #d99ec9 74%);
 }
 
 body {
+    overflow: hidden;
     font-family: Pixel;
     font-size: 16px;
-    background-image: url(/fondo\ 2-2.jpg);
+    background-image: url(fondo.jpg);
     background-attachment: fixed;
     background-position: center;
 
@@ -106,6 +164,19 @@ canvas {
     // transform: translateX(1100px);
 }
 
+#Shuffle {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+#Shuffle img {
+    width: 60px;
+}
 
 h2 {
     font-size: 6rem;
