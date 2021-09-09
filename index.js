@@ -7,6 +7,8 @@ const infoList = document.querySelector(".info");
 const btnStartGame = document.getElementById("startGame");
 const title1 = document.getElementById("title1");
 const gameBoard = document.getElementById("gameBoard");
+var audio = document.getElementById("audio");
+audio.play();
 
 const ctx = canvas.getContext("2d");
 let gameInterval;
@@ -56,6 +58,7 @@ const game = {
     timer = new Timer();
     timer.start();
     title1.style.display = "none";
+    audio.style.display = "none"
   },
 
   setLooserView: function (score) {
@@ -82,7 +85,7 @@ const game = {
 
 class Timer {
   constructor() {
-    this.currentTime = 10;
+    this.currentTime = 60;
     this.timerInterval;
   }
 
