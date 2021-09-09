@@ -21,7 +21,17 @@
                     <li>Cada vez conectes una pareja, ganaras tiempo para continuar tu aventura.</li>
                 </ul>
             </div>
-            <button id="startGame"><img src="/button1.png" alt=""></button>
+
+            <div class="btn-container">
+                <button id="startGame"><img src="/button1.png" alt=""></button>
+                <div id="music__container">
+                    <h3 id="playStop">Play Music</h3>
+                    <button id="playMusic"><img src="./images/play.png" alt=""></button>
+                </div>
+                <!-- <audio controls autoplay loop id="audio">
+                    <source type="audio/wav" src="./audio/welcome.mp3">
+                </audio> -->
+            </div>
             <div class="leader__board--container">
                 <h3>Leader Board</h3>
                 <ul id="leader__board--ul">
@@ -30,12 +40,6 @@
             </div>
         </div>
 
-        
-        <audio controls autoplay loop  id="audio">
-            <source type="audio/wav" src="/Kirby Dream Land - 8Bit_160k.mp3">
-        </audio>
-
-        <button id="startGame"><img src="/button1.png" alt=""></button>
         <div id="gameBoard">
             <div class="statusBar">
                 <div id="timer1" class="timer">

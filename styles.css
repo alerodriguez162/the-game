@@ -195,6 +195,35 @@ h2 {
     background-color: #80808073;
 }
 
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#playMusic {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+#playMusic img {
+    width: 80px;
+}
+
+#music__container {
+    display: flex;
+    flex-direction: column;
+}
+
+#music__container h3 {
+    margin: 0;
+}
 
 .end__screen--container {
     width: 600px;
