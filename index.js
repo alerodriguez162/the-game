@@ -7,12 +7,17 @@ const welcomeViewContainer = document.querySelector(".welcome__view--container")
 const btnStartGame = document.getElementById("startGame");
 const title1 = document.getElementById("title1");
 const gameBoard = document.getElementById("gameBoard");
-var audio = document.getElementById("audio");
-audio.play();
-
 const form = document.getElementById("form");
 const leaderBoard = document.getElementById("leader__board--ul");
+const playAudioWelcome = document.getElementById("playMusic");
 const ctx = canvas.getContext("2d");
+
+const welcomeAudio = generateAudioTags("./audio/welcome.mp3");
+const looserAudio = generateAudioTags("./audio/lose.mp3");
+const winnerAudio = generateAudioTags("./audio/winner.mp3");
+const clickAudio = generateAudioTags("./audio/click.mp3");
+const correctAudio = generateAudioTags("./audio/correct.mp3");
+
 let gameInterval;
 let board;
 let timer;
@@ -24,23 +29,11 @@ const minUniElement = document.getElementById("minUni");
 const secDecElement = document.getElementById("secDec");
 const secUniElement = document.getElementById("secUni");
 
-function printTime() {
-  printSeconds();
-  printMinutes();
-}
-
-function printMinutes() {
-  let minutes = chronometer.computeTwoDigitNumber(chronometer.getMinutes());
-  let splitMinutes = minutes.split("");
-  minDecElement.innerHTML = splitMinutes[0];
-  minUniElement.innerHTML = splitMinutes[1];
-}
-
-function printSeconds() {
-  let seconds = chronometer.computeTwoDigitNumber(chronometer.getSeconds());
-  let splitSeconds = seconds.split("");
-  secDecElement.innerHTML = splitSeconds[0];
-  secUniElement.innerHTML = splitSeconds[1];
+function generateAudioTags(source) {
+  let audio = document.createElement("audio");
+  audio.load();
+  audio.src = source;
+  return audio;
 }
 
 const game = {
@@ -59,11 +52,10 @@ const game = {
     timer = new Timer();
     timer.start();
     title1.style.display = "none";
-    audio.style.display = "none"
   },
 
   setLooserView: function (score) {
-    console.log(JSON.stringify(score, null, 2));
+    looserAudio.play();
     endScreenTitle.innerText = "Game Over";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
     endScreenImg.src = "./images/bonk.webp";
@@ -71,7 +63,7 @@ const game = {
   },
 
   setWinnerView: function (score) {
-    console.log(JSON.stringify(score, null, 2));
+    winnerAudio.play();
 
     endScreenTitle.innerText = "Winner!!";
     endScreenScore.innerText = `Puntuacion: ${Math.floor(score)}`;
@@ -89,7 +81,7 @@ const game = {
 
 class Timer {
   constructor() {
-    this.currentTime = 60;
+    this.currentTime = 5;
     this.timerInterval;
   }
 
@@ -258,6 +250,7 @@ class Board {
 
   linkCard() {
     if (this.firstCard.selectedCard.type === this.secondCard.selectedCard.type) {
+      correctAudio.play();
       this.cardsClass.splice(this.firstCard.index, 1, null);
       this.cardsClass.splice(this.secondCard.index, 1, null);
       this.cards = this.cards.filter((card) => {
@@ -371,6 +364,23 @@ class Card {
 }
 
 window.onload = () => {
+  playAudioWelcome.onclick = () => {
+    let text = document.getElementById("playStop");
+    if (text.innerText === "Play Music") {
+      text.innerText = "Stop Music";
+      let img = playAudioWelcome.getElementsByTagName("img")[0];
+      img.src = "./images/pause.png";
+      img.style.width = "53px";
+      welcomeAudio.play();
+    } else {
+      text.innerText = "Play Music";
+      let img = playAudioWelcome.getElementsByTagName("img")[0];
+      img.style.width = "80px";
+      img.src = "./images/play.png";
+      welcomeAudio.pause();
+    }
+  };
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -431,6 +441,7 @@ canvas.addEventListener(
           board.firstCard = null;
           card.selected = false;
         }
+        clickAudio.play();
       }
     });
   },
