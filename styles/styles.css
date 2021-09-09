@@ -57,7 +57,7 @@ input:focus {
 }
 
 #timer1 {
-    // max-width: 100px;
+   
 }
 
 .info,
@@ -159,10 +159,6 @@ canvas {
 
 }
 
-.shfl1 {
-    // margin-bottom: 600px; 
-    // transform: translateX(1100px);
-}
 
 #Shuffle {
     background: none;
