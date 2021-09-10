@@ -33,7 +33,8 @@ const secUniElement = document.getElementById("secUni");
 function generateAudioTags(source) {
   let audio = document.createElement("audio");
   audio.load();
-  audio.volume = 0.3;
+  if (source === "./audio/welcome.mp3") audio.volume = 0.05;
+  else audio.volume = 0.1;
   audio.src = source;
   return audio;
 }
